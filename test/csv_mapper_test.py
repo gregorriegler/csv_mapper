@@ -1,4 +1,4 @@
-from src.csvmapper import load_csv, load_csv_from_file, map_content, write_csv
+from csv_mapper.app import *
 import os
 
 
