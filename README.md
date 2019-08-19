@@ -28,8 +28,8 @@ Rule File Format:
 
 Available Modes:
 
-	**replace_word** replaces all words, which are equal to the **wordToReplace** with the specified **word**
-	**replace_column** replaces the whole column with **word** if the column contains **wordToReplace**
+**replace_word** replaces all words, which are equal to the **wordToReplace** with the specified **word**
+**replace_column** replaces the whole column with **word** if the column contains **wordToReplace**
 
 
 example::
