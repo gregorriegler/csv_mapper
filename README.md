@@ -5,11 +5,14 @@ Please make sure your CSV files have CRLF or LF file endings to seperate the row
 and use ```,``` as delimiter to seperate the columns
 
 example::
+
 	```
 	head1,head2,head3\r\n
 	data1,data2,data3\r\n
 	```
+
 	OR
+	
 	```
 	head1,head2,head3\n
 	data1,data2,data3\n
@@ -26,6 +29,7 @@ Rule File Format:
 ```
 
 Available Modes:
+
 	```replace_word``` replaces all words, which are equal to the ```wordToReplace``` with the specified ```word```
 	```replace_column``` replaces the whole column with ```word``` if the column contains ```wordToReplace```
 
