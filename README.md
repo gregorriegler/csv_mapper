@@ -6,17 +6,15 @@ and use ```,``` as delimiter to seperate the columns
 
 example::
 
-	```
+
 	head1,head2,head3\r\n
 	data1,data2,data3\r\n
-	```
 
-	OR
-	
-	```
+OR
+
 	head1,head2,head3\n
 	data1,data2,data3\n
-	```
+	
 
 To exectute this programm you have to specify a source csv file and a rule csv file:
 ```
@@ -30,8 +28,8 @@ Rule File Format:
 
 Available Modes:
 
-	```replace_word``` replaces all words, which are equal to the ```wordToReplace``` with the specified ```word```
-	```replace_column``` replaces the whole column with ```word``` if the column contains ```wordToReplace```
+	**replace_word** replaces all words, which are equal to the **wordToReplace** with the specified **word**
+	**replace_column** replaces the whole column with **word** if the column contains **wordToReplace**
 
 
 example::
