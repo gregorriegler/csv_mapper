@@ -1,1 +1,2 @@
-0,hello,helloooo
+0,hello,helloooo,replace_column
+1,world,max,replace_word
