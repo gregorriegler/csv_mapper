@@ -1,6 +1,7 @@
 reads a comma separated csv and replaces certain values according to another csv that contains replacements rules
 
 Please try to use ```UTF-8``` file format for the source.csv and rule.csv file
+
 Please make sure your CSV files have CRLF or LF file endings to seperate the rows
 and use ```,``` as delimiter to seperate the columns
 
@@ -29,6 +30,7 @@ Rule File Format:
 Available Modes:
 
 **replace_word** replaces all words, which are equal to the **wordToReplace** with the specified **word**
+
 **replace_column** replaces the whole column with **word** if the column contains **wordToReplace**
 
 
