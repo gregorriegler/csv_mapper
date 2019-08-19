@@ -17,22 +17,41 @@ OR
 	data1,data2,data3\n
 	
 
-To exectute this programm you have to specify a source csv file and a rule csv file:
+To exectute this program you have to specify a source csv file and a rule csv file:
 ```
 python app.py source.csv rule.csv
 ```
 
-Rule File Format:
-```
-<ROW>,wordToReplace,word,<MODE>
-```
 
-Available Modes:
+Available Modes for the rulefile:
 
 **replace_word** replaces all words, which are equal to the **wordToReplace** with the specified **word**
 
-**replace_column** replaces the whole column with **word** if the column contains **wordToReplace**
+**replace_column[single wordToReplace]** replaces the whole column with **word** if the column contains **wordToReplace**
 
+**replace_column[multipe wordsToReplace]** replaces the whoel column with the specified **word** if the column contains all 
+words that are in **wordsToReplace**
+
+example rulefile::
+
+```
+1,hello,helloooo,replace_word
+```
+
+~ this rule would replace all **hello** words in **each row** of column **2**
+
+```
+3,hello, max mustermann, replace_column
+```
+
+~ this rule would replace the whole field with **max mustermann** if it contains **hello** in each row  of column **4**
+
+```
+0,hey world max,hallo max mustermann!,replace_column  
+```
+
+~ this rule would replace the whole field with **hallo max mustermann!** in each row of column **1**
+if it contains the words **hey**, **world** and **max**
 
 example::
 
@@ -47,6 +66,7 @@ rule file:
 ```
 0,hello,helloooo,replace_column
 1,world,max,replace_word
+2,mustermann hello max,hello World!,replace_column
 ```
 
 output:

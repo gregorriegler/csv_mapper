@@ -25,31 +25,44 @@ def write_csv(content):
 def apply_rule(content, rule):
     column = int(rule[0])
     mode = rule[3].lower()
-    wordToReplace = rule[1].lower()
-
+    
     for row_number, row in enumerate(content):
         if row_number == 0: continue
-        #split column into a lower case word array(whitespace as delimiter)
-        word_array = row[column].lower().split(' ');
+        #replace ',' with ' ' from content regardless of the outcome
+        content[row_number][column].replace(',', '')
+        #split column into a lower case word array without(whitespace as delimiter)
+        word_array = row[column].lower().replace(',','').split(' ')
+
+        wordsToReplaceWith = rule[1].lower().split(' ')
 
         if mode == 'replace_column':
             for word in word_array:
-                if word == wordToReplace:
+                if word in wordsToReplaceWith: wordsToReplaceWith.remove(word)
+                if not wordsToReplaceWith:
                     content[row_number][column] = rule[2]
                     break
 
         elif mode == 'replace_word':
             for word_number, word in enumerate(word_array):
-                if word == wordToReplace:
+                if len(wordsToReplaceWith) > 1:
+                    raise TypeError('Argument should be string not an array in mode: {}'.format(mode))
+
+                if word == wordsToReplaceWith[0]:
                     word_array[word_number] = rule[2]
 
             seperator = " "
             content[row_number][column] = seperator.join(word_array)
+        else:
+            raise NameError('Unkown mode!')
 
 
 def map_content(content, rules):
-    for rule in rules:
-        apply_rule(content, rule)
+    for rule_number, rule in enumerate(rules):
+        try:
+            apply_rule(content, rule)
+        except Exception as e:
+            print('Error[rule file] in line: {} -> {}'.format(rule_number + 1, e))
+            continue
     return content
 
 
