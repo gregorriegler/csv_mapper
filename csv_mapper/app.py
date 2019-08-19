@@ -23,11 +23,28 @@ def write_csv(content):
 
 
 def apply_rule(content, rule):
+    column = int(rule[0])
+    mode = rule[3]
+
     for row_number, row in enumerate(content):
         if row_number == 0: continue
-        for column_number, column in enumerate(row):
-            if column == rule[1]:
-                content[row_number][column_number] = rule[2]
+        # split column into a word array (takes whitespace as the default delimiter)
+        word_array = row[column].split();
+
+        if mode == 'replace_column':
+            for word in word_array:
+                if word == rule[1]:
+                    content[row_number][column] = rule[2]
+                    break
+
+        elif mode == 'replace_word':
+            seperator = " "
+            for word in word_array:
+                if word == rule[1]:
+                    word = rule[1]
+            content[row_number][column] = seperator.join(word_array)
+
+
 
 
 def map_content(content, rules):
