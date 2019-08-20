@@ -22,6 +22,12 @@ To exectute this program you have to specify a source csv file and a rule csv fi
 python app.py source.csv rule.csv
 ```
 
+You can also specify a output.csv,
+the result is going to be written into this file instead of the stdout stream
+
+```
+python app.py source.csv rule.csv destination.csv
+```
 
 Available Modes for the rulefile:
 

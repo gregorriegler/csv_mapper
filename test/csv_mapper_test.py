@@ -14,8 +14,15 @@ class TestCsvMapper:
         assert csv_content == [["h1", "h2"], ["hello", "hello world"]]
 
     def test_write_csv_to_string(self):
-        csv_string = write_csv([["hello", "world"]])
+        csv_string = write_csv_to_string([["hello", "world"]])
         assert csv_string == "hello,world\r\n"
+
+    def test_write_csv_to_csv(self):
+        csv_content = [["h1","h2"],["data1","data2"]]
+        write_csv(csv_content, os.path.dirname(__file__) + "/test_result.csv")
+        result = load_csv_from_file(os.path.dirname(__file__) + "/test_result.csv")
+
+        assert result == csv_content
 
     def test_skip_first_line(self):
         csv_content = [["hello", "world"], ["hello", "world"]]
@@ -86,4 +93,11 @@ class TestCsvMapper:
 
         with pytest.raises(TypeError):
             assert apply_rule(csv_content, rules[0])
+
+    def test_main_invalid_argument_count_exception(self):
+        args = ['app.py','source.txt', 'rules.txt', 'target', 'random.txt']
+
+        with pytest.raises(Exception):
+            assert main(args)
+    
 

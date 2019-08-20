@@ -1,6 +1,6 @@
-import csv
 from io import StringIO
 import sys
+import csv
 
 
 def load_csv(text):
@@ -9,18 +9,26 @@ def load_csv(text):
 
 
 def load_csv_from_file(filename):
-    with open(filename) as csv_file:
+    with open(filename, mode = 'r', encoding = 'utf-8-sig', newline = '') as csv_file:
         reader = csv.reader(csv_file, delimiter=',')
         return list(reader)
 
 
-def write_csv(content):
+def write_csv_to_string(content):
     output = StringIO()
     writer = csv.writer(output, quoting=csv.QUOTE_MINIMAL)
     for row in content:
         writer.writerow(row)
     return output.getvalue()
 
+
+def write_csv(content, destination_file):
+    with open(destination_file, 'w', newline='', encoding='utf-8-sig') as csv_file:
+        writer = csv.writer(csv_file, delimiter=',')
+        for row in content:
+            writer.writerow(row)
+
+    
 
 def apply_rule(content, rule):
     column = int(rule[0])
@@ -66,12 +74,18 @@ def map_content(content, rules):
     return content
 
 
-def main(input_file, rules_file):
-    source_file = load_csv_from_file(input_file)
-    rules_file = load_csv_from_file(rules_file)
-    output = map_content(source_file, rules_file)
-    print(write_csv(output))
+def main(args):
+    src_file = load_csv_from_file(args[1])
+    rules_file = load_csv_from_file(args[2])
+    content = map_content(src_file, rules_file)
 
+    print(len(sys.argv))
+    if len(sys.argv) == 3:
+        sys.stdout.write(write_csv_to_string(content))
+    elif len(sys.argv) == 4:
+        write_csv(content, args[3])
+    else:
+        raise Exception('Invalid Argument Count')
 
 if __name__ == '__main__':
-    main(sys.argv[1], sys.argv[2])
+    main(sys.argv)
