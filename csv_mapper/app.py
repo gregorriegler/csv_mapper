@@ -28,24 +28,29 @@ def write_csv(content, destination_file):
         for row in content:
             writer.writerow(row)
 
-    
+def add_role(role, role_array):
+    if role not in role_array:
+        role_array.append(role)
 
 def apply_rule(content, rule):
     column = int(rule[0])
     mode = rule[3].lower()
-    
-    for row_number, row in enumerate(content):
-        if row_number == 0: continue
-        #replace ',' with ' ' from content regardless of the outcome
-        content[row_number][column].replace(',', '')
-        #split column into a lower case word array without(whitespace as delimiter)
-        word_array = row[column].lower().replace(',','').split(' ')
+    roles = [] 
 
+    for row_number, row in enumerate(content):
+        if row_number == 0 and mode != 'delete_column': continue
+        #removes all , from content regardless of the outcome
+        content[row_number][column].replace(',', '')
+        #split field and the wordsToReplaceWith
+        #into a lower case word array(whitespace as delimiter)
+        word_array = row[column].lower().replace(',','').split(' ')
         wordsToReplaceWith = rule[1].lower().split(' ')
 
+        role_content = []
         if mode == 'replace_column':
             for word in word_array:
-                if word in wordsToReplaceWith: wordsToReplaceWith.remove(word)
+                if word in wordsToReplaceWith:
+                    wordsToReplaceWith.remove(word)
                 if not wordsToReplaceWith:
                     content[row_number][column] = rule[2]
                     break
@@ -60,6 +65,24 @@ def apply_rule(content, rule):
 
             seperator = " "
             content[row_number][column] = seperator.join(word_array)
+
+        elif mode == 'add_role':
+            for word in word_array:
+                role_to_add = [row_number, rule[2]]
+                if word in wordsToReplaceWith:
+                    add_role(role_to_add, roles)
+                    break
+
+        elif mode == 'replace_with_roles':
+            for role in roles:
+                row_to_apply_role = role[0]
+                role_name = role[1]
+                if row_to_apply_role == row_number & role_name not in role_content:
+                    role_content.append(role_name)
+            seperator = ", "
+            content[row_number][column] = seperator.join(role_content)
+        elif mode == 'delete_column':
+            del row[column]
         else:
             raise NameError('Unkown mode!')
 
@@ -79,7 +102,6 @@ def main(args):
     rules_file = load_csv_from_file(args[2])
     content = map_content(src_file, rules_file)
 
-    print(len(sys.argv))
     if len(sys.argv) == 3:
         sys.stdout.write(write_csv_to_string(content))
     elif len(sys.argv) == 4:

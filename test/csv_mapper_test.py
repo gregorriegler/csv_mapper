@@ -52,6 +52,13 @@ class TestCsvMapper:
         result = map_content(csv_content, rules)
         assert result == [["h1", "h2"], ["helloooo", "worldd"], ["hell0", "hello max"], ["helloooo", "w0rld"]]
 
+    def test_delete_column(self):
+        csv_content = [["h1", "h2"], ["hello world", "worldd"], ["hell0", "hello world"], ["hello", "w0rld"]]
+        rules = [[1, "","", "delete_column"]]
+
+        result = map_content(csv_content, rules)
+        assert result == [["h1"], ["hello world"], ["hell0"], ["hello"]]
+
     def test_replace_content_regardless_of_case(self):
         csv_content = [["h1", "h2"], ["heLlO world", "worldd"], ["hell0", "hello WoRlD"], ["hello", "w0rld"]]
         rules = [[0, "HelLo", "helloooo", "replace_column"], [1, "wOrld", "MAX", "replace_word"]]
@@ -99,5 +106,3 @@ class TestCsvMapper:
 
         with pytest.raises(Exception):
             assert main(args)
-    
-

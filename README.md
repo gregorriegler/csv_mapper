@@ -22,11 +22,11 @@ To exectute this program you have to specify a source csv file and a rule csv fi
 python app.py source.csv rule.csv
 ```
 
-You can also specify a output.csv,
-the result is going to be written into this file instead of the stdout stream
+You can also specify a destination.csv,
+the result is going to be written into this file instead of the stdout stream to **ensure** it is **UTF-8** encoded
 
 ```
-python app.py source.csv rule.csv destination.csv
+python app.py source.csv rule.csv [destination.csv]
 ```
 
 Available Modes for the rulefile:
@@ -35,8 +35,16 @@ Available Modes for the rulefile:
 
 **replace_column[single wordToReplace]** replaces the whole column with **word** if the column contains **wordToReplace**
 
-**replace_column[multipe wordsToReplace]** replaces the whoel column with the specified **word** if the column contains all 
+**replace_column[multipe wordToReplace]** replaces the whole column with the specified **word** if the column contains all
 words that are in **wordsToReplace**
+
+**delete_column** deletes the whole column, the fields **wordToReplace** and **word** are not necessary
+
+Format:
+
+```
+<column_number>,<wordToReplace>,<word>,<mode>
+```
 
 example rulefile::
 
@@ -59,12 +67,18 @@ example rulefile::
 ~ this rule would replace the whole field with **hallo max mustermann!** in each row of column **1**
 if it contains the words **hey**, **world** and **max**
 
+```
+2,,,delete_column
+```
+
+~ this rule would delete the whole **3**rd column
+
 example::
 
 source file:
 ```
-h1,h2
-hello,hello world
+h1,h2,h3,h4
+hello,hello world, mustermann says hello max, blabla
 ```
 
 rule file:
@@ -73,12 +87,13 @@ rule file:
 0,hello,helloooo,replace_column
 1,world,max,replace_word
 2,mustermann hello max,hello World!,replace_column
+3,,,delete_column
 ```
 
 output:
 ```
-h1,h2
-helloooo,hello max
+h1,h2,h3
+helloooo,hello max,hello World!
 ```
 
 To test this application execute this command in the root directory of the project:

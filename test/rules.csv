@@ -1,2 +1,4 @@
 0,hello,helloooo,replace_column
 1,world,max,replace_word
+2,mustermann hello max,hello World!,replace_column
+3,,,delete_column
