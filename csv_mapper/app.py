@@ -9,7 +9,7 @@ def load_csv(text):
 
 
 def load_csv_from_file(filename):
-    with open(filename, mode = 'r', encoding = 'utf-8-sig', newline = '') as csv_file:
+    with open(filename, mode='r', encoding='utf-8-sig', newline='') as csv_file:
         reader = csv.reader(csv_file, delimiter=',')
         return list(reader)
 
@@ -28,39 +28,41 @@ def write_csv(content, destination_file):
         for row in content:
             writer.writerow(row)
 
+
 def add_role(role, role_array):
     if role not in role_array:
         role_array.append(role)
 
+
 def apply_rule(content, rule):
     column = int(rule[0])
     mode = rule[3].lower()
-    roles = [] 
+    roles = []
 
     for row_number, row in enumerate(content):
         if row_number == 0 and mode != 'delete_column': continue
-        #removes all , from content regardless of the outcome
+        # removes all , from content regardless of the outcome
         content[row_number][column].replace(',', '')
-        #split field and the wordsToReplaceWith
-        #into a lower case word array(whitespace as delimiter)
-        word_array = row[column].lower().replace(',','').split(' ')
-        wordsToReplaceWith = rule[1].lower().split(' ')
+        # split field and the wordsToReplaceWith
+        # into a lower case word array(whitespace as delimiter)
+        word_array = row[column].lower().replace(',', '').split(' ')
+        words_to_replace_with = rule[1].lower().split(' ')
 
         role_content = []
         if mode == 'replace_column':
             for word in word_array:
-                if word in wordsToReplaceWith:
-                    wordsToReplaceWith.remove(word)
-                if not wordsToReplaceWith:
+                if word in words_to_replace_with:
+                    words_to_replace_with.remove(word)
+                if not words_to_replace_with:
                     content[row_number][column] = rule[2]
                     break
 
         elif mode == 'replace_word':
             for word_number, word in enumerate(word_array):
-                if len(wordsToReplaceWith) > 1:
+                if len(words_to_replace_with) > 1:
                     raise TypeError('Argument should be string not an array in mode: {}'.format(mode))
 
-                if word == wordsToReplaceWith[0]:
+                if word == words_to_replace_with[0]:
                     word_array[word_number] = rule[2]
 
             seperator = " "
@@ -69,7 +71,7 @@ def apply_rule(content, rule):
         elif mode == 'add_role':
             for word in word_array:
                 role_to_add = [row_number, rule[2]]
-                if word in wordsToReplaceWith:
+                if word in words_to_replace_with:
                     add_role(role_to_add, roles)
                     break
 
@@ -108,6 +110,7 @@ def main(args):
         write_csv(content, args[3])
     else:
         raise Exception('Invalid Argument Count')
+
 
 if __name__ == '__main__':
     main(sys.argv)
