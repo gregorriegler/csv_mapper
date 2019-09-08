@@ -35,18 +35,24 @@ def apply_rule(content, rule):
     pattern = rule[2]
     replacement = rule[3]
 
+    modes = {
+        'replace_column': replace_column,
+        'replace_word': replace_word,
+        'delete_column': delete_column
+    }
+
     for row_number, row in enumerate(content):
         if row_number == 0 and mode != 'delete_column':
             continue
 
         if mode == 'replace_column':
-            replace_column(row, column, pattern, replacement)
+            modes['replace_column'](row, column, pattern, replacement)
 
         elif mode == 'replace_word':
-            replace_word(row, column, pattern, replacement)
+            modes['replace_word'](row, column, pattern, replacement)
 
         elif mode == 'delete_column':
-            delete_column(row, column, pattern, replacement)
+            modes['delete_column'](row, column, pattern, replacement)
 
         else:
             raise NameError('Unknown mode!')
