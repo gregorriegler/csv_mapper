@@ -29,72 +29,50 @@ def write_csv(content, destination_file):
             writer.writerow(row)
 
 
-def add_role(role, role_array):
-    if role not in role_array:
-        role_array.append(role)
-
-
 def apply_rule(content, rule):
     column = int(rule[0])
     mode = rule[1].lower()
     pattern = rule[2]
     replacement = rule[3]
-    roles = []
 
     for row_number, row in enumerate(content):
         if row_number == 0 and mode != 'delete_column':
             continue
-        # removes all , from content regardless of the outcome
-        row[column] = row[column].replace(',', '')
 
-        role_content = []
         if mode == 'replace_column':
-            word_array = row[column].lower().replace(',', '').split(' ')
-            words_to_replace_with = pattern.lower().split(' ')
-
-            for word in word_array:
-                if word in words_to_replace_with:
-                    words_to_replace_with.remove(word)
-                if not words_to_replace_with:
-                    row[column] = replacement
-                    break
+            replace_column(row, column, pattern, replacement)
 
         elif mode == 'replace_word':
-            word_array = row[column].lower().replace(',', '').split(' ')
-            words_to_replace_with = pattern.lower().split(' ')
+            replace_word(row, column, pattern, replacement)
 
-            for word_number, word in enumerate(word_array):
-                if len(words_to_replace_with) > 1:
-                    raise TypeError('Argument should be string not an array in mode: {}'.format(mode))
-
-                if word == words_to_replace_with[0]:
-                    word_array[word_number] = replacement
-
-            separator = " "
-            row[column] = separator.join(word_array)
-
-        elif mode == 'add_role':
-            word_array = row[column].lower().replace(',', '').split(' ')
-            words_to_replace_with = pattern.lower().split(' ')
-
-            for word in word_array:
-                role_to_add = [row_number, replacement]
-                if word in words_to_replace_with:
-                    add_role(role_to_add, roles)
-                    break
-
-        elif mode == 'replace_with_roles':
-            for role in roles:
-                row_to_apply_role = role[0]
-                role_name = role[1]
-                if row_to_apply_role == row_number & role_name not in role_content:
-                    role_content.append(role_name)
-            separator = ", "
-            row[column] = separator.join(role_content)
         elif mode == 'delete_column':
             del row[column]
         else:
             raise NameError('Unknown mode!')
+
+
+def replace_word(row, column, pattern, replacement):
+    word_array = row[column].lower().replace(',', '').split(' ')
+    words_to_replace_with = pattern.lower().split(' ')
+    for word_number, word in enumerate(word_array):
+        if len(words_to_replace_with) > 1:
+            raise TypeError('Argument should be string not an array in mode: replace_word')
+
+        if word == words_to_replace_with[0]:
+            word_array[word_number] = replacement
+    separator = " "
+    row[column] = separator.join(word_array)
+
+
+def replace_column(row, column, pattern, replacement):
+    word_array = row[column].lower().replace(',', '').split(' ')
+    words_to_replace_with = pattern.lower().split(' ')
+    for word in word_array:
+        if word in words_to_replace_with:
+            words_to_replace_with.remove(word)
+        if not words_to_replace_with:
+            row[column] = replacement
+            break
 
 
 def map_content(content, rules):
