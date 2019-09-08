@@ -46,13 +46,13 @@ def apply_rule(content, rule):
             continue
 
         if mode == 'replace_column':
-            modes['replace_column'](row, column, pattern, replacement)
+            modes[mode](row, column, pattern, replacement)
 
         elif mode == 'replace_word':
-            modes['replace_word'](row, column, pattern, replacement)
+            modes[mode](row, column, pattern, replacement)
 
         elif mode == 'delete_column':
-            modes['delete_column'](row, column, pattern, replacement)
+            modes[mode](row, column, pattern, replacement)
 
         else:
             raise NameError('Unknown mode!')
