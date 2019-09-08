@@ -45,15 +45,8 @@ def apply_rule(content, rule):
         if row_number == 0 and mode != 'delete_column':
             continue
 
-        if mode == 'replace_column':
+        if mode in modes.keys():
             modes[mode](row, column, pattern, replacement)
-
-        elif mode == 'replace_word':
-            modes[mode](row, column, pattern, replacement)
-
-        elif mode == 'delete_column':
-            modes[mode](row, column, pattern, replacement)
-
         else:
             raise NameError('Unknown mode!')
 
