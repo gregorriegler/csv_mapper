@@ -87,7 +87,7 @@ def apply_rule(content, rule):
         elif mode == 'delete_column':
             del row[column]
         else:
-            raise NameError('Unkown mode!')
+            raise NameError('Unknown mode!')
 
 
 def map_content(content, rules):

@@ -18,7 +18,7 @@ class TestCsvMapper:
         assert csv_string == "hello,world\r\n"
 
     def test_write_csv_to_csv(self):
-        csv_content = [["h1","h2"],["data1","data2"]]
+        csv_content = [["h1", "h2"], ["data1", "data2"]]
         write_csv(csv_content, os.path.dirname(__file__) + "/test_result.csv")
         result = load_csv_from_file(os.path.dirname(__file__) + "/test_result.csv")
 
@@ -54,7 +54,7 @@ class TestCsvMapper:
 
     def test_delete_column(self):
         csv_content = [["h1", "h2"], ["hello world", "worldd"], ["hell0", "hello world"], ["hello", "w0rld"]]
-        rules = [[1, "","", "delete_column"]]
+        rules = [[1, "", "", "delete_column"]]
 
         result = map_content(csv_content, rules)
         assert result == [["h1"], ["hello world"], ["hell0"], ["hello"]]
@@ -102,7 +102,7 @@ class TestCsvMapper:
             assert apply_rule(csv_content, rules[0])
 
     def test_main_invalid_argument_count_exception(self):
-        args = ['app.py','source.txt', 'rules.txt', 'target', 'random.txt']
+        args = ['app.py', 'source.txt', 'rules.txt', 'target', 'random.txt']
 
         with pytest.raises(Exception):
             assert main(args)
