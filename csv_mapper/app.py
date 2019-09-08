@@ -40,7 +40,8 @@ def apply_rule(content, rule):
     roles = []
 
     for row_number, row in enumerate(content):
-        if row_number == 0 and mode != 'delete_column': continue
+        if row_number == 0 and mode != 'delete_column':
+            continue
         # removes all , from content regardless of the outcome
         content[row_number][column].replace(',', '')
         # split field and the wordsToReplaceWith
@@ -65,8 +66,8 @@ def apply_rule(content, rule):
                 if word == words_to_replace_with[0]:
                     word_array[word_number] = rule[2]
 
-            seperator = " "
-            content[row_number][column] = seperator.join(word_array)
+            separator = " "
+            content[row_number][column] = separator.join(word_array)
 
         elif mode == 'add_role':
             for word in word_array:
@@ -81,8 +82,8 @@ def apply_rule(content, rule):
                 role_name = role[1]
                 if row_to_apply_role == row_number & role_name not in role_content:
                     role_content.append(role_name)
-            seperator = ", "
-            content[row_number][column] = seperator.join(role_content)
+            separator = ", "
+            content[row_number][column] = separator.join(role_content)
         elif mode == 'delete_column':
             del row[column]
         else:
