@@ -45,7 +45,7 @@ def apply_rule(content, rule):
         if row_number == 0 and mode != 'delete_column':
             continue
         # removes all , from content regardless of the outcome
-        content[row_number][column].replace(',', '')
+        row[column] = row[column].replace(',', '')
 
         role_content = []
         if mode == 'replace_column':
@@ -56,7 +56,7 @@ def apply_rule(content, rule):
                 if word in words_to_replace_with:
                     words_to_replace_with.remove(word)
                 if not words_to_replace_with:
-                    content[row_number][column] = replacement
+                    row[column] = replacement
                     break
 
         elif mode == 'replace_word':
@@ -71,7 +71,7 @@ def apply_rule(content, rule):
                     word_array[word_number] = replacement
 
             separator = " "
-            content[row_number][column] = separator.join(word_array)
+            row[column] = separator.join(word_array)
 
         elif mode == 'add_role':
             word_array = row[column].lower().replace(',', '').split(' ')
@@ -90,7 +90,7 @@ def apply_rule(content, rule):
                 if row_to_apply_role == row_number & role_name not in role_content:
                     role_content.append(role_name)
             separator = ", "
-            content[row_number][column] = separator.join(role_content)
+            row[column] = separator.join(role_content)
         elif mode == 'delete_column':
             del row[column]
         else:
