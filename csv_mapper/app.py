@@ -36,7 +36,7 @@ def add_role(role, role_array):
 
 def apply_rule(content, rule):
     column = int(rule[0])
-    mode = rule[3].lower()
+    mode = rule[1].lower()
     roles = []
 
     for row_number, row in enumerate(content):
@@ -47,7 +47,7 @@ def apply_rule(content, rule):
         # split field and the wordsToReplaceWith
         # into a lower case word array(whitespace as delimiter)
         word_array = row[column].lower().replace(',', '').split(' ')
-        words_to_replace_with = rule[1].lower().split(' ')
+        words_to_replace_with = rule[2].lower().split(' ')
 
         role_content = []
         if mode == 'replace_column':
@@ -55,7 +55,7 @@ def apply_rule(content, rule):
                 if word in words_to_replace_with:
                     words_to_replace_with.remove(word)
                 if not words_to_replace_with:
-                    content[row_number][column] = rule[2]
+                    content[row_number][column] = rule[3]
                     break
 
         elif mode == 'replace_word':
@@ -64,14 +64,14 @@ def apply_rule(content, rule):
                     raise TypeError('Argument should be string not an array in mode: {}'.format(mode))
 
                 if word == words_to_replace_with[0]:
-                    word_array[word_number] = rule[2]
+                    word_array[word_number] = rule[3]
 
             separator = " "
             content[row_number][column] = separator.join(word_array)
 
         elif mode == 'add_role':
             for word in word_array:
-                role_to_add = [row_number, rule[2]]
+                role_to_add = [row_number, rule[3]]
                 if word in words_to_replace_with:
                     add_role(role_to_add, roles)
                     break
