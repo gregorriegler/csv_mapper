@@ -46,7 +46,8 @@ def apply_rule(content, rule):
             replace_word(row, column, pattern, replacement)
 
         elif mode == 'delete_column':
-            del row[column]
+            delete_column(row, column, pattern, replacement)
+
         else:
             raise NameError('Unknown mode!')
 
@@ -73,6 +74,10 @@ def replace_column(row, column, pattern, replacement):
         if not words_to_replace_with:
             row[column] = replacement
             break
+
+
+def delete_column(row, column, pattern, replacement):
+    del row[column]
 
 
 def map_content(content, rules):
